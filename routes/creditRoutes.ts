@@ -5,6 +5,6 @@ const router = express.Router();
 const creditController = new CreditController();
 
 router.get('/credits', creditController.getAllCredits);
-router.post('/credits', creditController.createCredit);
+router.post('/credits', creditController.uploadDocumentPhoto, creditController.resizePhoto, creditController.createCredit);
 
 export { router as creditRoutes };

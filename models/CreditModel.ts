@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface ICredit extends Document {
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -10,6 +11,7 @@ export interface ICredit extends Document {
   municipio: string;
   direction?: string;
   income: number;
+  document: string;
   createdAt: Date;
 }
 
@@ -48,6 +50,9 @@ const creditSchema = new Schema<ICredit>({
     required: [true, 'Municipio is required'],
   },
   direction: {
+    type: String,
+  },
+  document: {
     type: String,
   },
   income: {
