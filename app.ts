@@ -53,7 +53,7 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 
-app.use(API_PATH, creditRoutes);
+app.use('/', creditRoutes);
 
 app.get('/', (_req: Request, res: Response) => {
   res.status(200).json({
