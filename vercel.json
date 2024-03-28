@@ -9,7 +9,7 @@
   "rewrites": [
     {
       "source": "/api/v1/(.*)",
-      "destination": ":7121/$1"
+      "destination": "/"
     }
   ]
 }
