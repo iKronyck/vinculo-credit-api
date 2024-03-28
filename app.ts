@@ -1,5 +1,5 @@
 // @ts-ignore
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
@@ -54,6 +54,12 @@ app.use(helmet());
 app.use(express.json());
 
 app.use(API_PATH, creditRoutes);
+
+app.get('/', (_req: Request, res: Response) => {
+  res.status(200).json({
+    name: 'Israel',
+  });
+});
 
 app.all('*', (req, _res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
