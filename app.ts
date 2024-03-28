@@ -9,8 +9,8 @@ import swaggerJSdoc from 'swagger-jsdoc';
 import { creditRoutes } from './routes/creditRoutes';
 import AppError from './utils/AppError';
 
-const APP_VERSION = process.env.APP_VERSION ?? 1;
-const API_PATH = `/api/v${APP_VERSION}`;
+// const APP_VERSION = process.env.APP_VERSION ?? 1;
+// const API_PATH = `/api/v${APP_VERSION}`;
 
 const options = {
   definition: {
@@ -41,10 +41,10 @@ if (process.env.APP_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-app.use(`${API_PATH}/images`, express.static(path.join(__dirname, 'public', 'img', 'users')));
+app.use(`/images`, express.static(path.join(__dirname, 'public', 'img', 'users')));
 
 app.use(
-  `${API_PATH}/api-docs`,
+  `/api-docs`,
   swaggerUI.serve,
   swaggerUI.setup(specs, { explorer: true, customCssUrl: 'https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.0/themes/2.x/theme-newspaper.css' }),
 );
