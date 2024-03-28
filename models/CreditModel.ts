@@ -12,6 +12,7 @@ export interface ICredit extends Document {
   direction?: string;
   income: number;
   document: string;
+  selfie: string;
   createdAt: Date;
 }
 
@@ -53,6 +54,9 @@ const creditSchema = new Schema<ICredit>({
     type: String,
   },
   document: {
+    type: String,
+  },
+  selfie: {
     type: String,
   },
   income: {

@@ -43,9 +43,20 @@ export class CreditController {
 
   public resizePhoto = async (req: Request, _res: Response, next: NextFunction) => {
     if (!req.file) return next();
-    req.file.filename = `document-${uuidv4()}-${Date.now()}.jpeg`;
+    if (!req.body.selfie) return next();
+
+    const uuid = uuidv4();
+    const now = Date.now();
+
+    req.file.filename = `document-${uuid}-${now}.jpeg`;
+
+    const selfie = req.file.filename.replace('document', 'selfie');
+    const buffer = Buffer.from(req.body.selfie.split(',')[1], 'base64');
+
+    req.body.selfie = `images/${selfie}`;
 
     await sharp(req.file.buffer).resize(500, 500).toFormat('jpeg').jpeg({ quality: 90 }).toFile(`public/img/users/${req.file.filename}`);
+    await sharp(buffer).resize(500, 500).toFormat('jpeg').jpeg({ quality: 90 }).toFile(`public/img/users/${selfie}`);
 
     next();
   };
