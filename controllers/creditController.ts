@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import multer from 'multer';
-import sharp from 'sharp';
 import { v4 as uuidv4 } from 'uuid';
 import { CreditModel, ICredit } from '../models/CreditModel';
 import AppError from '../utils/AppError';
+import { S3Service } from '../services/S3Service';
 
 const multerStorage = multer.memoryStorage();
 
@@ -42,29 +42,28 @@ export class CreditController {
   public uploadDocumentPhoto = upload.single('document');
 
   public resizePhoto = async (req: Request, _res: Response, next: NextFunction) => {
-    if (!req.file) return next();
-    if (!req.body.selfie) return next();
+    if (req.file && req.body.selfie) {
+      const uuid = uuidv4();
+      const now = Date.now();
 
-    const uuid = uuidv4();
-    const now = Date.now();
+      const documentName = `document-${uuid}-${now}.jpeg`;
+      const selfieName = documentName.replace('document', 'selfie');
+      const selfieBuffer = Buffer.from(req.body.selfie.split(',')[1], 'base64');
 
-    req.file.filename = `document-${uuid}-${now}.jpeg`;
+      const s3Services = new S3Service();
+      await s3Services.uploadFile(documentName, req.file.buffer);
+      await s3Services.uploadFile(selfieName, selfieBuffer);
 
-    const selfie = req.file.filename.replace('document', 'selfie');
-    const buffer = Buffer.from(req.body.selfie.split(',')[1], 'base64');
-
-    req.body.selfie = `images/${selfie}`;
-
-    await sharp(req.file.buffer).resize(500, 500).toFormat('jpeg').jpeg({ quality: 90 }).toFile(`public/img/users/${req.file.filename}`);
-    await sharp(buffer).resize(500, 500).toFormat('jpeg').jpeg({ quality: 90 }).toFile(`public/img/users/${selfie}`);
-
+      req.body.document = await s3Services.getFileURL(documentName);
+      req.body.selfie = await s3Services.getFileURL(selfieName);
+    }
     next();
   };
 
   public async createCredit(req: Request, res: Response): Promise<void> {
     try {
       const body = req.body;
-      if (req.file) body.document = `images/${req.file.filename}`;
+
       const newCredit: ICredit = await CreditModel.create(body);
       res.status(201).json({
         status: 'success',
