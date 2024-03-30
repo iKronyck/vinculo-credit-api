@@ -16,6 +16,55 @@ export interface ICredit extends Document {
   createdAt: Date;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     creditSchema:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: Identificador único del crédito
+ *         firstName:
+ *           type: string
+ *           description: Nombre del solicitante
+ *         lastName:
+ *           type: string
+ *           description: Apellido del solicitante
+ *         email:
+ *           type: string
+ *           description: Correo electrónico del solicitante
+ *         phone:
+ *           type: string
+ *           description: Número de teléfono del solicitante
+ *         identification:
+ *           type: string
+ *           description: Identificación del solicitante
+ *         department:
+ *           type: string
+ *           description: Departamento del solicitante
+ *         municipio:
+ *           type: string
+ *           description: Municipio del solicitante
+ *         direction:
+ *           type: string
+ *           description: Dirección del solicitante (opcional)
+ *         document:
+ *           type: string
+ *           description: Documento del solicitante
+ *         selfie:
+ *           type: string
+ *           description: Selfie del solicitante
+ *         income:
+ *           type: number
+ *           description: Ingreso del solicitante
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Fecha de creación del crédito
+ */
+
 const creditSchema = new Schema<ICredit>({
   firstName: {
     type: String,
