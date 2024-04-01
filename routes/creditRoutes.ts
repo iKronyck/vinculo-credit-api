@@ -19,6 +19,28 @@ const creditController = new CreditController();
  *         description: Error interno del servidor
  * */
 router.get('/credits', creditController.getAllCredits);
+/**
+ * @swagger
+ * /credits/(id):
+ *   get:
+ *     tags:
+ *     - Obtener un credito por id
+ *     summary: Obtiene un credito
+ *     description: Obtener credito por id de usuario.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID del recurso que se desea obtener.
+ *     responses:
+ *       200:
+ *         description: Lista de un crédito
+ *       500:
+ *         description: Error interno del servidor
+ * */
+router.get('/credits/:id', creditController.getCreditByID);
 
 /**
  * @swagger

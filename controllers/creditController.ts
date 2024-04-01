@@ -78,4 +78,22 @@ export class CreditController {
       });
     }
   }
+
+  public async getCreditByID(req: Request, res: Response): Promise<void> {
+    try {
+      const id = req.params.id;
+      const credit = await CreditModel.findById(id);
+      res.status(200).json({
+        status: 'success',
+        data: {
+          credit,
+        },
+      });
+    } catch (error) {
+      res.status(404).json({
+        status: 'fail',
+        message: 'El usuario no fue encontrado',
+      });
+    }
+  }
 }

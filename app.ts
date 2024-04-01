@@ -27,7 +27,7 @@ const options = {
     },
     servers: [
       {
-        url: `${process.env.APP_URL}${process.env.APP_VERSION}`,
+        url: `${process.env.APP_URL}`,
       },
     ],
   },
